@@ -55,6 +55,10 @@ DestroySyntheticPointerDeviceFunc g_destroy_device = nullptr;
 
 POINTER_TYPE_INFO make_touch_info(uint32_t id, POINT point, UINT32 flags)
 {
+    // 合成注入使用相对于虚拟桌面左上角的坐标，不能直接使用 ClientToScreen 的屏幕坐标。
+    point.x -= GetSystemMetrics(SM_XVIRTUALSCREEN);
+    point.y -= GetSystemMetrics(SM_YVIRTUALSCREEN);
+
     POINTER_TYPE_INFO info = { };
     info.type = PT_TOUCH;
     info.touchInfo.pointerInfo.pointerType = PT_TOUCH;
